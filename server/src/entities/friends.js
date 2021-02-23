@@ -1,4 +1,5 @@
 class Friends {
+    //Derive from databse structure -> should contain an array of friends
     constructor(db) {
         this.db = db
     }
