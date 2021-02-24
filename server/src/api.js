@@ -14,7 +14,7 @@ function init(db) {
         next();
     });
     const users = new Users.default(db);
-    router.post("/user/login", async (req, res) => {
+    router.post("/user/login", async (req, res) => {   //LOGIN 
         try {
             const { login, password } = req.body;
             // Erreur sur la requête HTTP
@@ -73,7 +73,8 @@ function init(db) {
 
     router
         .route("/user/:user_id(\\d+)")
-        .get(async (req, res) => {
+        //showing an user profil
+        .get(async (req, res) => {    
         try {
             const user = await users.get(req.params.user_id);
             if (!user)
@@ -84,10 +85,10 @@ function init(db) {
         catch (e) {
             res.status(500).send(e);
         }
-    })
+    })   //deleting an user                                  
         .delete((req, res, next) => res.send(`delete user ${req.params.user_id}`));
 
-    router.put("/user", (req, res) => {
+    router.post("/user", (req, res) => {     //créer un utilisateur   
         const { login, password, lastname, firstname } = req.body;
         if (!login || !password || !lastname || !firstname) {
             res.status(400).send("Missing fields");
