@@ -143,6 +143,17 @@ function init(db) {
         }
     });
 
+
+    //Code for friends starts:
+    const Messages = new Messages.default(db);
+
+    router.route('url')
+
+    .get 
+
+
+    .post
+
     return router;
 }
 exports.default = init;
