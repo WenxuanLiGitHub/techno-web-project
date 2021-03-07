@@ -1,6 +1,8 @@
+//const db = require("./app.js")
 const express = require("express");
 const Users = require("./entities/users.js");
 const Friends = require("./entities/friends.js");
+
 
 function init(db) {
     const router = express.Router();
@@ -92,13 +94,30 @@ function init(db) {
         const { login, password, lastname, firstname } = req.body;
         if (!login || !password || !lastname || !firstname) {
             res.status(400).send("Missing fields");
-        } else {
-            users.create(login, password, lastname, firstname)
-                .then((user_id) => res.status(201).send({ id: user_id }))
-                .catch((err) => res.status(500).send(err));
-        }
-    });
+            return;
+        } 
+        try {
+            console.log("avant entrée dans user exist ");
+            let temp = users.exists(login);
+            console.log("Test user exist ");
+            if (! temp) {
+                res.status(401).json({
+                    status: 401,
+                    message: "Utilisateur déja inscrit"
+                });
+                return;
+            }
 
+        }
+        catch (e) {
+            res.status(500).send(e);
+        }
+        
+        users.create(login, password, lastname, firstname)
+            .then((user_id) => res.status(201).send({ id: user_id }))
+            .catch((err) => res.status(500).send(err));
+        });
+        /*
     //Code for friends starts:
     const friends = new Friends.default(db);
 
@@ -142,19 +161,9 @@ function init(db) {
                 .catch((err) => res.status(500).send(err));
         }
     });
+    */
 
-
-    //Code for friends starts:
-    const Messages = new Messages.default(db);
-
-    router.route('url')
-
-    .get 
-
-
-    .post
-
-    return router;
+  
 }
 exports.default = init;
 

@@ -8,7 +8,7 @@ const mocha = require('mocha');
 chai.use(chaiHttp);
 chai.should();
 
-mocha.describe("Test de l'API user", () => {
+mocha.describe("Test de l'API user avec la BD", () => {
     mocha.it("user", (done) => {
         const request = chai.request(app.default).keepOpen();
         const user = {
