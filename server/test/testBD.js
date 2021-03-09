@@ -29,17 +29,15 @@ req3.run(['pikachu', 'pikapika', 'chu', 'pika'], (err) => {
 });
 
 req4 = 'SELECT DISTINCT rowid, lastname name FROM users WHERE rowid = 1 ORDER BY name;';
-req4 = 'SELECT login FROM users WHERE login = ?'
+//req4 = 'SELECT login FROM users WHERE login = ?'
 // get pour un seul
 var lg = 'goldorak'
-db.all(req4, [lg], (err, rows) => {
+db.all(req4, [], (err, rows) => {
   if (err) {
       console.log("login inconnu");
       throw err ;
   }
   rows.forEach((row) => {
-      if( row.login !== undefined){
-        console.log(row.name);
-      }
+        console.log(row);
   });
 });

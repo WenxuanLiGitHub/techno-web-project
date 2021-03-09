@@ -53,11 +53,15 @@ class Users {
 
   async exists(login) {
     return new Promise((resolve, reject) => {
+      console.log("je passe 1");
       var stmt = db.prepare("SELECT login FROM users WHERE login = ? ")
+      console.log("je passe 1 - 1");
       stmt.get([login], function(err, res){
         if(err) {
+          console.log("je passe 2")
           reject(err);
         } else {
+          console.log("je passe 3")
           resolve(res != undefined);
         }
 

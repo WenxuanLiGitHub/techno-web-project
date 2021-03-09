@@ -1,4 +1,3 @@
-//const db = require("./app.js")
 const express = require("express");
 const Users = require("./entities/users.js");
 const Friends = require("./entities/friends.js");
@@ -90,7 +89,7 @@ function init(db) {
     })   //deleting an user                                  
         .delete((req, res, next) => res.send(`delete user ${req.params.user_id}`));
 
-    router.post("/user", (req, res) => {     //créer un utilisateur   
+    router.post("/user", async (req, res) => {     //créer un utilisateur   
         const { login, password, lastname, firstname } = req.body;
         if (!login || !password || !lastname || !firstname) {
             res.status(400).send("Missing fields");
@@ -98,8 +97,9 @@ function init(db) {
         } 
         try {
             console.log("avant entrée dans user exist ");
-            let temp = users.exists(login);
-            console.log("Test user exist ");
+            let temp = await users.exists(login);
+            //console.log("apres Test user exist ");
+            //console.log(temp)
             if (! temp) {
                 res.status(401).json({
                     status: 401,
@@ -108,61 +108,21 @@ function init(db) {
                 return;
             }
 
+            
         }
         catch (e) {
             res.status(500).send(e);
         }
-        
+
         users.create(login, password, lastname, firstname)
             .then((user_id) => res.status(201).send({ id: user_id }))
             .catch((err) => res.status(500).send(err));
+        
+        
         });
-        /*
-    //Code for friends starts:
-    const friends = new Friends.default(db);
 
-    //Get the entire list of friends
-    router.route("/friends").get(async (req, res) => {
-        try {
-            const friendsList = await friends.getList();
-            if (!friendsList)
-             res.sendStatus(404);
-            else 
-                res.send(friendsList);
-        }
-        catch (e) {
-            res.status(500).send(e);
-        }
-    })
 
-    //Get one specific friend or delete one specific friend
-    router.route("/friends/:friend_id(\\d+)").get(async (req, res) => {
-        try {
-            const friend = await friends.getFriend(req.params.friend_id);
-            if (!friend)
-                res.sendStatus(404);
-            else 
-                res.send(friend);
-        }
-        catch (e) {
-            res.status(500).send(e);
-        }
-    })
-    .delete((req, res, next) => res.send(`delete friend ${req.params.friend_id}`));
-
-    //Add one friend
-    router.put("/friends", (req, res) => {
-        const { userid, lastname, firstname } = req.body;
-        if (!userid || !lastname || !firstname) {
-            res.status(400).send("Missing fields");
-        } else {
-            friends.add(userid, lastname, firstname)
-                .then((friends_id) => res.status(201).send({ id: friends_id }))
-                .catch((err) => res.status(500).send(err));
-        }
-    });
-    */
-
+    return router;
   
 }
 exports.default = init;

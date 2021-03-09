@@ -4,12 +4,8 @@ const api = require('./api.js');
 
 //connexion à la base de données
 const sqlite3 = require('sqlite3').verbose()
-var db = new sqlite3.Database(':memory:', (err) =>{
-    if(err){
-        return console.error(err.message);
-    }
-    console.log('Connected to the Database');
-})
+var db = new sqlite3.Database(':memory:')
+
 
 // Détermine le répertoire de base
 const basedir = path.normalize(path.dirname(__dirname));
@@ -25,13 +21,7 @@ app.use(session({
 }));
 
 
-app.use('/api', function(req,res){
-    api.default(db);
-});
-
-
-
-//app.use('/api', api.default(db));
+app.use('/api', api.default(db));
 
 //app.use('/apiFriend')
 
@@ -40,7 +30,6 @@ app.on('close', () => {
 });
 
 //fermeture de la BD
-console.log("Fermeture de la BD")
 db.close()
 
 exports.default = app;
