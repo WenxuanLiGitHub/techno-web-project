@@ -1,12 +1,13 @@
 class Users {
   constructor(db) {
-    this.db = db
-    // suite plus tard avec la BD
+    this.db = db;
+    this.db.exec("CREATE TABLE IF NOT EXISTS users (login VARCHAR(512) NOT NULL PRIMARY KEY, password VARCHAR(512) NOT NULL, lastname VARCHAR(256) NOT NULL, firstname VARCHAR(256) NOT NULL)");
   }
 
   create(login, password, lastname, firstname) {
     return new Promise((resolve, reject) => {
       let userid = 1; // À remplacer par une requête bd
+
       if(false) {
         //erreur
         reject();
@@ -40,12 +41,14 @@ class Users {
 
   async exists(login) {
     return new Promise((resolve, reject) => {
-      if(false) {
-        //erreur
-        reject();
-      } else {
-        resolve(true);
-      }
+      var stmt = db.prepare("SELECT login FROM users WHERE login = ?")
+      stmt.get([login], function(err, res){
+        if(err) {
+          reject(err)
+        }else{
+          resolve(res != undefined)
+        }
+      })
     });
   }
 
