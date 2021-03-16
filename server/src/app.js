@@ -1,5 +1,6 @@
 const path = require('path');
-const api = require('./api.js');
+const api1 = require('./apiUser.js');
+const api2 = require('./apiFriend.js');
 
 
 //connexion à la base de données
@@ -14,14 +15,16 @@ console.debug(`Base directory: ${basedir}`);
 
 express = require('express');
 const app = express()
-api_1 = require("./api.js");
+api_1 = require("./apiUser.js");
+api_2 = require("./apiFriend.js")
 const session = require("express-session");
 
 app.use(session({
     secret: "technoweb rocks"
 }));
 
-app.use('/api', api.default(db));
+app.use('/apiUser', api1.default(db));
+app.use('/apiFriend', api2.default(db));
 
 // Démarre le serveur
 app.on('close', () => {
