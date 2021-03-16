@@ -145,14 +145,14 @@ function init(db) {
 
 
     //Code for friends starts:
-    const Messages = new Messages.default(db);
+    // const Messages = new Messages.default(db);
 
-    router.route('url')
+    // router.route('url')
 
-    .get 
+    // .get 
 
 
-    .post
+    // .post
 
     return router;
 }
